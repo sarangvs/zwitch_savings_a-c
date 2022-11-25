@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://elements.zwitch.io/zwitch.js"></script>
+</head>
+<body>
+
+
+
+<!--<button id="myBtn">Pay</button>-->
+<!--<button id="myJsBtn">call js</button>-->
+
+<div id="demo_id"></div>
+
+<script>
+
+var token ;
+var accountId
+
+window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
+                window.flutter_inappwebview.callHandler('handlerName')
+                  .then(function(result) {
+                    // print to the console the data coming
+                    // from the Flutter side.
+                    console.log(JSON.stringify(result));
+                    token = result.token;
+                    accountId = result.accountId
+                    const credentials = {
+   
+  token:token    ,
+  account_id: accountId,
+
+     }
+     Zwitch.loadStatement({
+      containerId: 'statement_id',
+      credentials: credentials,
+      callbacks: {
+        onSuccess: (resp) => { console.log(resp); },
+        onError:  (resp) => { console.log(resp); },
+      }
+    });
+                    window.flutter_inappwebview
+                      .callHandler('handlerName',['token', token]);
+                });
+            }, {once:true});
+
+
+// <!--const element = document.getElementById("myBtn");-->
+// <!--element.addEventListener('click', myFunction);-->
+
+// <!--function myFunction() {-->
+// <!--   -->
+// <!--}-->
+</script>
+
+</body>
+</html>

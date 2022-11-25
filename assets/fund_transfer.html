@@ -1,0 +1,84 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://elements.zwitch.io/zwitch.js"></script></head>
+<body>
+
+
+
+<!--<button id="myBtn">Pay</button>-->
+<!--<button id="myJsBtn">call js</button>-->
+
+<p id="balance_id">
+
+<script>
+var token ;
+var transferToken;
+var accountId
+
+
+window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
+                window.flutter_inappwebview.callHandler('handlerName')
+                  .then(function(result) {
+                    // print to the console the data coming
+                    // from the Flutter side.
+                    console.log(JSON.stringify(result));
+                    token = result.token;
+                    accountId = result.accountId
+                    transferToken = result.transferToken;
+                    const credentials = {
+   
+   token:token,
+   account_id: accountId,
+ 
+      }
+     Zwitch.transfer({
+      containerId: 'transfer_id',
+      credentials: credentials,
+      callbacks: {
+        onSuccess: (resp) => { 
+            if (resp.data && resp.data.status == 'transfer_init') {
+            //your callback handler here to get transfer token 'transferToken'
+            Zwitch.setTransferToken(transferToken);
+          } 
+          window.flutter_inappwebview
+                      .callHandler('handlerName',['token', resp])
+        },
+        onError:  (resp) => { console.log(resp); },
+      }
+    });
+                    window.flutter_inappwebview
+                      .callHandler('handlerName',['token', token]);
+                });
+            }, {once:true});
+
+
+
+
+const myHandlerName = function(...args) {
+  return window.flutter_inappwebview.callHandler('myHandlerName', ...args);
+};
+// and then use it
+myHandlerName();
+
+
+const elementjs = document.getElementById("myJsBtn");
+elementjs.addEventListener('click', myJsFunction);
+function myJsFunction() {
+    // for sending msg to flutter app
+    JavascriptChannel.postMessage("Hi there, this is from Java script");
+}
+
+function getId(id){
+  alert('Onboardind Id js' +id);
+}
+
+
+</script>
+
+</body>
+</html>

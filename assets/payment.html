@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="https://elements.zwitch.io/zwitch.js"></script></head>
+<body>
+
+
+
+<!--<button id="myBtn">Pay</button>-->
+<!--<button id="myJsBtn">call js</button>-->
+
+<p id="balance_id">
+
+<script>
+var token ;
+
+
+window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
+                window.flutter_inappwebview.callHandler('handlerName')
+                  .then(function(result) {
+                    // print to the console the data coming
+                    // from the Flutter side.
+                    console.log(JSON.stringify(result));
+                    token = result.token;
+                    const credentials = {
+      // token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2lkIjoic2VzX2hQM0MweEY4WW5iQUh2dkJac29mQjZQdjkiLCJ1c2VyX2FjY291bnRzX3BpZCI6InVhXzdXS1U2bngxMWxKc0VrblhMSTU1UWdIWXQiLCJjdXN0b21lciI6eyJpZCI6IiJ9LCJhdXRoX2lzX3NhbmRib3giOjEsInR5cGUiOiJvbmJvYXJkaW5nIiwiYXVkIjoiendpdGNoX3NkayIsImV4cCI6MTY2ODY3MzYyNiwianRpIjoiY2VjODg1OTFhMWU0NDYwMGIyYzUzNjdkMjFlYzU0NTciLCJpYXQiOjE2Njg2NzAwMjYsImlzcyI6Ilp3aXRjaCBHbyIsIm5iZiI6MTY2ODY3MDAyNn0.Jhn6mQsnUKWzDy4KUn0AV_VqERMwJ_xb18QydQKvYLU',
+token:token    
+     }
+     Zwitch.openSavingsAccount({
+      containerId: 'account_id',
+      credentials: credentials,
+      callbacks: {
+        onSuccess: (resp) => { console.log(resp);
+          window.flutter_inappwebview
+                      .callHandler('handlerName', resp);
+        },
+        onError:  (resp) => { console.log(resp); },
+      }
+    });
+                    window.flutter_inappwebview
+                      .callHandler('handlerName',['token', token]);
+                });
+            }, {once:true});
+
+
+// window.onload = function() {
+//   // if (token == null) {
+//   //   window.location.reload();
+//   // }
+// // window.navigator.permissions.query({"name": "camera"});
+// // <!--  yourFunction(param1, param2);-->
+//  console.log('called');
+//   const credentials = {
+//       // token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uX2lkIjoic2VzX2hQM0MweEY4WW5iQUh2dkJac29mQjZQdjkiLCJ1c2VyX2FjY291bnRzX3BpZCI6InVhXzdXS1U2bngxMWxKc0VrblhMSTU1UWdIWXQiLCJjdXN0b21lciI6eyJpZCI6IiJ9LCJhdXRoX2lzX3NhbmRib3giOjEsInR5cGUiOiJvbmJvYXJkaW5nIiwiYXVkIjoiendpdGNoX3NkayIsImV4cCI6MTY2ODY3MzYyNiwianRpIjoiY2VjODg1OTFhMWU0NDYwMGIyYzUzNjdkMjFlYzU0NTciLCJpYXQiOjE2Njg2NzAwMjYsImlzcyI6Ilp3aXRjaCBHbyIsIm5iZiI6MTY2ODY3MDAyNn0.Jhn6mQsnUKWzDy4KUn0AV_VqERMwJ_xb18QydQKvYLU',
+// token:token    
+//      }
+//     Zwitch.openSavingsAccount({
+//       containerId: 'savingContainer',
+//       credentials: credentials,
+//       callbacks: {
+//         onSuccess: (resp) => { console.log(resp); },
+//         onError:  (resp) => { console.log(resp); },
+//       }
+//     });
+// };
+
+const myHandlerName = function(...args) {
+  return window.flutter_inappwebview.callHandler('myHandlerName', ...args);
+};
+// and then use it
+myHandlerName();
+
+
+const elementjs = document.getElementById("myJsBtn");
+elementjs.addEventListener('click', myJsFunction);
+function myJsFunction() {
+    // for sending msg to flutter app
+    JavascriptChannel.postMessage("Hi there, this is from Java script");
+}
+
+function getId(id){
+  alert('Onboardind Id js' +id);
+}
+
+
+// <!--const element = document.getElementById("myBtn");-->
+// <!--element.addEventListener('click', myFunction);-->
+
+// <!--function myFunction() {-->
+// <!--   -->
+// <!--}-->
+</script>
+
+</body>
+</html>
